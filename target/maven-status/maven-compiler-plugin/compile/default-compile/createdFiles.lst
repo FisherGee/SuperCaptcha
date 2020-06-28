@@ -1,0 +1,6 @@
+me\fishergee\supercaptcha\utility\CaptchaInventory.class
+me\fishergee\supercaptcha\listeners\InventoryClickListener.class
+me\fishergee\supercaptcha\cmds\CaptchaCmd.class
+me\fishergee\supercaptcha\SuperCaptcha.class
+me\fishergee\supercaptcha\listeners\PlayerJoinListener.class
+me\fishergee\supercaptcha\listeners\PlayerJoinListener$1.class

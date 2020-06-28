@@ -1,0 +1,6 @@
+name: SuperCaptcha
+version: 1.0-SNAPSHOT
+main: me.fishergee.supercaptcha.SuperCaptcha
+api-version: 1.13
+authors: [FisherGee]
+description: A simple captcha authenticator plugin.

@@ -1,0 +1,6 @@
+name: SuperCaptcha
+version: ${project.version}
+main: me.fishergee.supercaptcha.SuperCaptcha
+api-version: 1.13
+authors: [FisherGee]
+description: A simple captcha authenticator plugin.
