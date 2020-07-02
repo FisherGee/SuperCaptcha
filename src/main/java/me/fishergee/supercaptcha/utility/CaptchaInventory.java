@@ -1,5 +1,7 @@
 package me.fishergee.supercaptcha.utility;
 
+import me.fishergee.supercaptcha.SuperCaptcha;
+import me.fishergee.supercaptcha.managers.CaptchaPlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -13,15 +15,19 @@ import java.util.Random;
 
 public class CaptchaInventory{
 
+    private CaptchaPlayerManager captchaPlayerManager = SuperCaptcha.plugin.getCaptchaPlayerManager();
     private Inventory captchaInv;
     private Random verifyRandom = new Random();
     private ArrayList<Integer> verifyLocations = new ArrayList<>();
+    private int clickedSlots;
 
     public CaptchaInventory(Player player){
         captchaInv = Bukkit.createInventory(player, 27, "Solve the captcha!");
 
         this.randomizeVerifyItems(5);
         this.setFillerItems(captchaInv);
+
+        this.captchaPlayerManager.addPlayerCaptcha(player, this);
     }
 
     public void setFillerItems(Inventory inv){
@@ -36,10 +42,6 @@ public class CaptchaInventory{
 
     public Inventory getCaptchaInventory(){
         return this.captchaInv;
-    }
-
-    public ArrayList<Integer> getVerifyLocations(){
-        return this.verifyLocations;
     }
 
     public void randomizeVerifyItems(int amountOfVerify){
@@ -59,5 +61,22 @@ public class CaptchaInventory{
             captchaInv.setItem(slot, verify_item);
             verifyLocations.add(slot);
         }
+        clickedSlots = amountOfVerify;
+    }
+
+    public void slotVerified(){
+        clickedSlots--;
+    }
+
+    public boolean allSlotsVerified(){
+        if(clickedSlots == 0){
+            return true;
+        }
+        return false;
+    }
+
+    public void changeSlot(Inventory inv, int slot){
+        ItemStack filler_item = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
+        inv.setItem(slot, filler_item);
     }
 }

@@ -1,5 +1,8 @@
 package me.fishergee.supercaptcha.listeners;
 
+import me.fishergee.supercaptcha.SuperCaptcha;
+import me.fishergee.supercaptcha.managers.CaptchaPlayerManager;
+import me.fishergee.supercaptcha.utility.CaptchaInventory;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -8,6 +11,9 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class InventoryClickListener implements Listener {
+
+    private CaptchaPlayerManager captchaPlayerManager = SuperCaptcha.plugin.getCaptchaPlayerManager();
+
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryClickEvent(InventoryClickEvent e) {
@@ -32,13 +38,18 @@ public class InventoryClickListener implements Listener {
         }
 
         Player player = (Player) e.getWhoClicked();
+        CaptchaInventory captcha = captchaPlayerManager.getCaptchaInventory(player);
 
         if (item.getItemMeta().getDisplayName().equals(ChatColor.GREEN + "Click here to verify!")) {
-            player.closeInventory();
-            player.sendMessage(ChatColor.GREEN + "You have been verified!");
-            return;
+            captcha.changeSlot(e.getClickedInventory(), e.getSlot());
+            captcha.slotVerified();
+            if(captcha.allSlotsVerified() == true){
+                player.closeInventory();
+                player.sendMessage(ChatColor.GREEN + "You have been verified!");
+                captchaPlayerManager.removePlayerCaptcha(player);
+                return;
+            }
         }
 
     }
-
 }
